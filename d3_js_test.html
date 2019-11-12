@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="numbers.js"></script>
+    <title>D3.js_test_file</title>
+</head>
+<body>
+
+    <script>
+        /* to run this script you must
+            1:run the cmd >python -m http.server from the directory where this file is
+            2:address the file in the browser address bar...
+                http://localhost:8000/d3_js_test.html
+                (note..you can specify a localhost port eg >python -m http.server 8888)
+        */
+        var tripDurArr = [];
+        var tripDurArrClean = [];
+        var birthYearArr = [];
+        var birthYearArrClean = [];
+        var genderArr = [];
+        var startIdArr = [];
+        //var myArr = [2,4,6,8,1,3,5,7,9];
+        var statistic = numbers.statistic;
+        var basic = numbers.basic;
+        var n1 = 0;
+        var n2 = 0;
+
+        d3.csv("201601-citibike-tripdata.csv").then(function(data) {
+            data.forEach(function(d) {
+                d.tripduration = +d.tripduration;
+                d["start station id"] = +d["start station id"];
+                d["start station latitude"] = +d["start station latitude"];
+                d["start station longitude"] = +d["start station longitude"];
+                d["end station latitude"] = +d["end station latitude"];
+                d["end station longitude"] = +d["end station longitude"];
+                d["birth year"] = +d["birth year"];
+            });
+        console.log(data[0]);
+        //console.log(data[200]);
+        //console.log(data.length);
+        //console.log(data.head);
+
+        /*function head(x){
+            if(x==undefined)
+                x = 5;
+            for(i=0;i<x;i++)
+                console.log(data[i]);
+        
+        }
+        */
+        
+        for(i=0;i<data.length;i++){
+            //console.log(data[i].tripduration);
+            tripDurArr[i] = data[i].tripduration;
+            birthYearArr[i] = data[i]["birth year"];
+            startIdArr[i] = data[i]["start station id"];
+        }
+        var j = 0;
+        for(i=0;i<birthYearArr.length;i++){
+            if((birthYearArr[i] > 1900) && (birthYearArr[i] < 2000)){
+                birthYearArrClean[j] = birthYearArr[i];
+                j = j + 1;
+            }
+        }
+
+        var j = 0;
+        for(i=0;i<tripDurArr.length;i++){
+            if((tripDurArr[i] < 100000)){
+                tripDurArrClean[j] = tripDurArr[i];
+                j = j + 1;
+            }
+        }
+
+
+        document.writeln('Trip Duration Array length ' + tripDurArr.length + '<br>');
+        document.writeln('Birth year array ' + birthYearArr.length + '<br>');
+        document.writeln('Start Stn array ' + startIdArr.length + '<br>');
+        document.writeln('Birth year array clean ' + birthYearArrClean.length + '<br>');
+        document.writeln('Trip Duration array clean ' + tripDurArrClean.length + '<br>');
+
+        //console.log(tripDurArr);
+        //console.log(tripDurArr[1]);
+        //console.log(tripDurArr[2]);
+
+
+        //console.log('median ' + statistic.median(tripDurArr));
+        //console.log('mode ' + statistic.mode(tripDurArr));
+        //console.log('quantile ' + statistic.quantile(tripDurArr,0,1));
+        //console.log('mean ' + statistic.mean(tripDurArr));
+        document.write('<br> Trip Duration minutes <br>' )
+        document.writeln('<br> max ' + basic.max(tripDurArrClean));
+        document.writeln('<br> min ' + basic.min(tripDurArrClean));
+
+        document.writeln('median ' + statistic.median(tripDurArrClean));
+        document.writeln('mode ' + statistic.mode(tripDurArrClean));
+        //document.writeln('quantile ' + statistic.quantile(tripDurArr,0,1));
+        document.writeln('mean ' + statistic.mean(tripDurArrClean).toFixed(2));
+
+        document.write('<br> Birth Year clean <br>');
+        document.writeln('<br> max ' + basic.max(birthYearArrClean));
+        document.writeln('<br> min ' + basic.min(birthYearArrClean));
+        document.writeln('median ' + statistic.median(birthYearArrClean));
+        document.writeln('mode ' + statistic.mode(birthYearArrClean));
+        //document.writeln('quantile ' + statistic.quantile(tripDurArr,0,1));
+        document.writeln('mean ' + statistic.mean(birthYearArrClean).toFixed(2));
+        
+
+
+        });
+
+        //alert(tripDurArr);
+        //console.log(tripDurArr);
+        //console.log(tripDurArr[1]);
+        //console.log(tripDurArr[2]);
+
+        //n1 = tripDurArr[1];
+        //n2 = tripDurArr[2];
+
+        //console.log(n1);
+        //console.log(n2);
+        //console.log(n1+n2);
+        /*
+        console.log(statistic.median(tripDurArr));
+        console.log(statistic.mode(tripDurArr));
+        console.log(statistic.quantile(tripDurArr,0,1));
+        console.log(statistic.mean(tripDurArr));
+        */
+   
+    </script>
+    
+</body>
+</html>
